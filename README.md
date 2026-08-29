@@ -1,35 +1,42 @@
-# Weather Data & Forecast App
+# 🌤️ Weather Data & Forecast App
 
-A Python-based weather application that uses the OpenWeather API to fetch current weather information and a 5-day forecast for any city.
+A Python-based weather application that fetches real-time weather information for any city using the OpenWeather API.
 
-## Features
+The project demonstrates API integration, environment variable management, error handling, and structured Python programming.
 
-- Search weather by city name
-- Display current temperature
-- Display feels-like temperature
-- Display weather condition
-- Display humidity
-- Display wind speed
-- 5-day weather forecast
-- Daily minimum, maximum, and average temperatures
-- Error handling for invalid cities
-- Secure API key management using environment variables
-- Continuous city search without restarting the application
+---
 
-## Technologies Used
+## 📌 Features
 
-- Python
-- Requests
-- Python-dotenv
-- OpenWeather API
+- 🌍 Search weather information by city name
+- 🌡️ Display current temperature
+- 🤗 Display "feels like" temperature
+- ☁️ Show current weather condition
+- 💧 Display humidity
+- 💨 Display wind speed
+- 🔐 Secure API key using environment variables
+- ⚠️ Handle invalid city names and API errors
+- 🐍 Built using Python
 
-## Project Structure
+---
+
+## 🛠️ Technologies Used
+
+- **Python**
+- **Requests** – for API requests
+- **python-dotenv** – for loading environment variables
+- **OpenWeather API** – for weather data
+- **Git & GitHub** – for version control
+
+---
+
+## 📂 Project Structure
 
 ```text
-weather&forecast app/
+weather-forecast-app/
 │
-├── weather_app.py
-├── requirements.txt
-├── .gitignore
-├── .env
-└── README.md
+├── weather_app.py       # Main Python application
+├── requirements.txt     # Project dependencies
+├── README.md            # Project documentation
+├── .gitignore           # Prevents sensitive/unnecessary files
+└── .env                 # API key (not uploaded to GitHub)

@@ -2,14 +2,16 @@ import requests
 import os
 from dotenv import load_dotenv
 
-# Load API key from .env
+# Load environment variables
 load_dotenv()
 
 API_KEY = os.getenv("OPENWEATHER_API_KEY")
 
+BASE_URL = "https://api.openweathermap.org/data/2.5"
+
 
 def get_current_weather(city):
-    url = "https://api.openweathermap.org/data/2.5/weather"
+    url = f"{BASE_URL}/weather"
 
     params = {
         "q": city,
@@ -17,9 +19,22 @@ def get_current_weather(city):
         "units": "metric"
     }
 
-    response = requests.get(url, params=params)
+    try:
+        response = requests.get(url, params=params, timeout=10)
 
-    if response.status_code == 200:
+        if response.status_code == 404:
+            print("\nCity not found. Please check the city name.")
+            return False
+
+        if response.status_code == 401:
+            print("\nInvalid API key.")
+            return False
+
+        if response.status_code != 200:
+            print("\nUnable to fetch weather information.")
+            print("Status Code:", response.status_code)
+            return False
+
         data = response.json()
 
         print("\n========================================")
@@ -37,16 +52,21 @@ def get_current_weather(city):
 
         return True
 
-    else:
-        print("\nUnable to fetch current weather.")
-        print("Status Code:", response.status_code)
-        print("Error:", response.text)
+    except requests.exceptions.Timeout:
+        print("\nRequest timed out. Please try again.")
 
-        return False
+    except requests.exceptions.ConnectionError:
+        print("\nNetwork error. Please check your internet connection.")
+
+    except requests.exceptions.RequestException as error:
+        print("\nAn error occurred while connecting to the weather service.")
+        print("Error:", error)
+
+    return False
 
 
 def get_forecast(city):
-    url = "https://api.openweathermap.org/data/2.5/forecast"
+    url = f"{BASE_URL}/forecast"
 
     params = {
         "q": city,
@@ -54,72 +74,78 @@ def get_forecast(city):
         "units": "metric"
     }
 
-    response = requests.get(url, params=params)
+    try:
+        response = requests.get(url, params=params, timeout=10)
 
-    if response.status_code != 200:
-        print("\nUnable to fetch weather forecast.")
-        print("Status Code:", response.status_code)
-        print("Error:", response.text)
-        return
+        if response.status_code != 200:
+            print("\nUnable to fetch forecast.")
+            return
 
-    data = response.json()
+        data = response.json()
 
-    # Store weather information by date
-    daily_data = {}
+        daily_data = {}
 
-    for forecast in data["list"]:
+        for forecast in data["list"]:
 
-        date = forecast["dt_txt"].split(" ")[0]
+            date = forecast["dt_txt"].split(" ")[0]
 
-        temperature = forecast["main"]["temp"]
-        humidity = forecast["main"]["humidity"]
-        condition = forecast["weather"][0]["description"]
+            temperature = forecast["main"]["temp"]
+            humidity = forecast["main"]["humidity"]
+            condition = forecast["weather"][0]["description"]
 
-        if date not in daily_data:
-            daily_data[date] = {
-                "temperatures": [],
-                "humidity": [],
-                "conditions": []
-            }
+            if date not in daily_data:
+                daily_data[date] = {
+                    "temperatures": [],
+                    "humidity": [],
+                    "conditions": []
+                }
 
-        daily_data[date]["temperatures"].append(temperature)
-        daily_data[date]["humidity"].append(humidity)
-        daily_data[date]["conditions"].append(condition)
+            daily_data[date]["temperatures"].append(temperature)
+            daily_data[date]["humidity"].append(humidity)
+            daily_data[date]["conditions"].append(condition)
 
-    print("\n========================================")
-    print("          5-DAY WEATHER FORECAST")
-    print("========================================")
+        print("\n========================================")
+        print("          5-DAY WEATHER FORECAST")
+        print("========================================")
 
-    print(f"City: {data['city']['name']}")
+        print(f"City: {data['city']['name']}")
 
-    print("----------------------------------------")
-    print("Date         Min     Max     Avg     Condition")
-    print("----------------------------------------")
+        print("----------------------------------------")
+        print("Date         Min     Max     Avg     Condition")
+        print("----------------------------------------")
 
-    for date, weather in list(daily_data.items())[:5]:
+        for date, weather in list(daily_data.items())[:5]:
 
-        temperatures = weather["temperatures"]
-        humidity_values = weather["humidity"]
-        conditions = weather["conditions"]
+            temperatures = weather["temperatures"]
+            conditions = weather["conditions"]
 
-        min_temp = min(temperatures)
-        max_temp = max(temperatures)
-        avg_temp = sum(temperatures) / len(temperatures)
+            min_temp = min(temperatures)
+            max_temp = max(temperatures)
+            avg_temp = sum(temperatures) / len(temperatures)
 
-        # Most common weather condition
-        condition = max(set(conditions), key=conditions.count)
+            condition = max(set(conditions), key=conditions.count)
 
-        print(
-            f"{date}   "
-            f"{min_temp:5.1f}°C  "
-            f"{max_temp:5.1f}°C  "
-            f"{avg_temp:5.1f}°C  "
-            f"{condition.title()}"
-        )
+            print(
+                f"{date}   "
+                f"{min_temp:5.1f}°C  "
+                f"{max_temp:5.1f}°C  "
+                f"{avg_temp:5.1f}°C  "
+                f"{condition.title()}"
+            )
 
-    print("----------------------------------------")
-    print("Forecast retrieved successfully.")
-    print("========================================")
+        print("----------------------------------------")
+        print("Forecast retrieved successfully.")
+        print("========================================")
+
+    except requests.exceptions.Timeout:
+        print("\nForecast request timed out.")
+
+    except requests.exceptions.ConnectionError:
+        print("\nNetwork error while fetching forecast.")
+
+    except requests.exceptions.RequestException as error:
+        print("\nAn error occurred.")
+        print("Error:", error)
 
 
 def main():
@@ -127,6 +153,11 @@ def main():
     print("\n========================================")
     print("       WEATHER DATA & FORECAST APP")
     print("========================================")
+
+    if not API_KEY:
+        print("\nAPI key not found!")
+        print("Please check your .env file.")
+        return
 
     while True:
 

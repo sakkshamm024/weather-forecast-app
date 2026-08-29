@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Weather Data & Forecast</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>🌦️ Weather Data & Forecast</h1>
+
+        <p class="subtitle">
+            Get real-time weather information and a 5-day forecast
+        </p>
+
+        <form method="POST">
+
+            <input
+                type="text"
+                name="city"
+                placeholder="Enter city name"
+                value="{{ city }}"
+                required
+            >
+
+            <button type="submit">
+                Search Weather
+            </button>
+
+        </form>
+
+
+        {% if error %}
+
+            <div class="error">
+                {{ error }}
+            </div>
+
+        {% endif %}
+
+
+        {% if weather %}
+
+            <div class="weather-card">
+
+                <h2>
+                    {{ weather.city }}, {{ weather.country }}
+                </h2>
+
+                <p class="date">
+                    {{ weather.date }}
+                </p>
+
+                <p class="time">
+                    {{ weather.time }}
+                </p>
+
+                <img
+                    class="weather-icon"
+                    src="https://openweathermap.org/img/wn/{{ weather.icon }}@2x.png"
+                    alt="{{ weather.condition }}"
+                >
+
+                <div class="temperature">
+                    {{ weather.temperature }}°C
+                </div>
+
+                <p class="condition">
+                    {{ weather.condition }}
+                </p>
+
+
+                <div class="weather-details">
+
+                    <div class="detail">
+                        <span>🌡️</span>
+                        <p>Feels Like</p>
+                        <strong>
+                            {{ weather.feels_like }}°C
+                        </strong>
+                    </div>
+
+                    <div class="detail">
+                        <span>💧</span>
+                        <p>Humidity</p>
+                        <strong>
+                            {{ weather.humidity }}%
+                        </strong>
+                    </div>
+
+                    <div class="detail">
+                        <span>💨</span>
+                        <p>Wind Speed</p>
+                        <strong>
+                            {{ weather.wind_speed }} m/s
+                        </strong>
+                    </div>
+
+                </div>
+
+
+                <div class="location-details">
+
+                    <div class="location-item">
+                        <span>📍</span>
+                        <p>Coordinates</p>
+                        <strong>
+                            {{ weather.latitude }},
+                            {{ weather.longitude }}
+                        </strong>
+                    </div>
+
+                    <div class="location-item">
+                        <span>🌅</span>
+                        <p>Sunrise</p>
+                        <strong>
+                            {{ weather.sunrise }}
+                        </strong>
+                    </div>
+
+                    <div class="location-item">
+                        <span>🌇</span>
+                        <p>Sunset</p>
+                        <strong>
+                            {{ weather.sunset }}
+                        </strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            {% if forecast %}
+
+                <h2 class="forecast-title">
+                    5-Day Forecast
+                </h2>
+
+                <div class="forecast-container">
+
+                    {% for day in forecast %}
+
+                        <div class="forecast-card">
+
+                            <h3>
+                                {{ day.day }}
+                            </h3>
+
+                            <p>
+                                {{ day.date }}
+                            </p>
+
+                            <img
+                                src="https://openweathermap.org/img/wn/{{ day.icon }}@2x.png"
+                                alt="{{ day.condition }}"
+                            >
+
+                            <p class="forecast-condition">
+                                {{ day.condition }}
+                            </p>
+
+                            <div class="forecast-temperatures">
+
+                                <span class="high">
+                                    ↑ {{ day.high }}°C
+                                </span>
+
+                                <span class="low">
+                                    ↓ {{ day.low }}°C
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% endif %}
+
+        {% endif %}
+
+    </div>
+
+</body>
+
+</html>
