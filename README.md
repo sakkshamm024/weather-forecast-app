@@ -47,3 +47,10 @@ weather-forecast-app/
 ├── README.md            # Project documentation
 ├── .gitignore           # Prevents sensitive/unnecessary files
 └── .env                 # API key (not uploaded to GitHub)
+## 📸 Screenshots
+
+### Weather Dashboard
+![Weather Dashboard](weather-app1.png)
+
+### 5-Day Forecast
+![5-Day Forecast](weather-app2.png)
