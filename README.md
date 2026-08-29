@@ -1,56 +1,71 @@
-# 🌤️ Weather Data & Forecast Ap
 # 🌦️ Weather Data & Forecast App
 
-A Flask-based weather application that provides real-time weather information and a 5-day forecast for any city.
+A Flask-based weather application that provides real-time weather information and a 5-day weather forecast for any city.
 
 ## 🚀 Live Demo
-🙌
-https://weather-forecast-app-mp31.onrender.com
 
-A Python-based weather application that fetches real-time weather information for any city using the OpenWeather API.
+[Open the Live Weather App](https://weather-forecast-app-mp31.onrender.com)
 
-The project demonstrates API integration, environment variable management, error handling, and structured Python programming.
+## ✨ Features
 
----
-
-## 📌 Features
-
-- 🌍 Search weather information by city name
-- 🌡️ Display current temperature
-- 🤗 Display "feels like" temperature
-- ☁️ Show current weather condition
-- 💧 Display humidity
-- 💨 Display wind speed
-- 🔐 Secure API key using environment variables
-- ⚠️ Handle invalid city names and API errors
-- 🐍 Built using Python
-
----
+- 🌡️ Real-time temperature
+- 🌤️ Current weather conditions
+- 📅 5-day weather forecast
+- 📈 Daily high and low temperatures
+- 💧 Humidity information
+- 💨 Wind speed
+- 🌅 Sunrise and sunset times
+- 📍 Geographic coordinates
+- ❌ Error handling for invalid cities and API errors
+- 📱 Responsive web interface
 
 ## 🛠️ Technologies Used
 
-- **Python**
-- **Requests** – for API requests
-- **python-dotenv** – for loading environment variables
-- **OpenWeather API** – for weather data
-- **Git & GitHub** – for version control
+- Python
+- Flask
+- HTML
+- CSS
+- JavaScript
+- OpenWeather API
+- Requests
+- python-dotenv
+- Gunicorn
 
----
+## 📸 Screenshots
 
-## 📂 Project Structure
+### Weather Dashboard
+
+![Weather Dashboard](weather_app1.png)
+
+### 5-Day Forecast
+
+![5-Day Forecast](weather_app2.png)
+
+## 📁 Project Structure
 
 ```text
 weather-forecast-app/
 │
-├── weather_app.py       # Main Python application
-├── requirements.txt     # Project dependencies
-├── README.md            # Project documentation
-├── .gitignore           # Prevents sensitive/unnecessary files
-└── .env                 # API key (not uploaded to GitHub)
-## 📸 Screenshots
+├── app.py
+├── weather_app.py
+├── requirements.txt
+├── README.md
+├── .gitignore
+│
+├── static/
+│   └── style.css
+│
+└── templates/
+    └── index.html
 
-### Weather Dashboard
-![Weather Dashboard](weather-app1.png)
 
-### 5-Day Forecast
-![5-Day Forecast](weather-app2.png)
+The OpenWeather API key is stored securely using an environment variable and is excluded from the GitHub repository using .gitignore.
+
+
+
+👨‍💻 Author
+Saksham Narang
+Computer Science Engineering Student
+
+
+⭐ Thanks for checking out this project!
